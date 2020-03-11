@@ -5,7 +5,7 @@
 import xadmin
 from import_export import resources
 from apps.quotation.models import Company, Goods, Type, Unit, Position_type, Warranty_policy, Service, Terms_of_payment, \
-    Delivery_time, Delivery_way,Rate,Validity_period
+    Delivery_time, Delivery_way,Rate,Validity_period,Customer,Contact
 
 
 class GoodsResource(resources.ModelResource):
@@ -145,6 +145,21 @@ class Validity_periodAdmin(object):
     list_filter = ['title', ]
     list_editable = ['title', ]
 
+class CustomerAdmin(object):
+    list_display = ['name','tel','contact' ,'add_time']
+    search_fields = ['name', ]
+    list_filter = ['name', ]
+    list_editable = ['name', ]
+
+class ContactAdmin(object):
+    list_display = ['name','company', 'position','phone','add_time']
+    search_fields = ['name','company', 'position','phone']
+    list_filter = ['name','company', 'position','phone' ]
+    list_editable = ['name','company' ]
+
+
+
+
 
 xadmin.site.register(Company, CompanyAdmin)
 xadmin.site.register(Goods, GoodsAdmin)
@@ -158,3 +173,5 @@ xadmin.site.register(Delivery_time, Delivery_timeAdmin)
 xadmin.site.register(Delivery_way, Delivery_wayAdmin)
 xadmin.site.register(Rate, RateAdmin)
 xadmin.site.register(Validity_period, Validity_periodAdmin)
+xadmin.site.register(Customer, CustomerAdmin)
+xadmin.site.register(Contact, ContactAdmin)

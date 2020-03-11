@@ -8,8 +8,8 @@ from apps.quotation.models import Goods
 
 
 class GlobalSittings(object):
-    site_title = '斯康后台管理系统'
-    site_footer = '斯康在线网'
+    site_title = '苏州斯康_订单管理系统'
+    site_footer = '苏州斯康'
     menu_style = 'accordion'
     apps_icons = {
         'quotation': "fa fa-plus-square",

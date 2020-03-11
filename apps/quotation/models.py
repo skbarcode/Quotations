@@ -71,7 +71,7 @@ class Position_type(BaseModel):
 
 class Contact(BaseModel):  # 联系人
     name = models.CharField(max_length=12, verbose_name='姓名')
-    company = models.ForeignKey(to='Customer', verbose_name='所在公司', on_delete=models.CASCADE)
+    company = models.ForeignKey(to='Customer', verbose_name='所在公司', on_delete=models.CASCADE,related_name='contact')
     gender_choices = ((0, '男'), (1, '女'),)
     gender = models.IntegerField(choices=gender_choices, verbose_name='性别', default=0)
     position = models.ForeignKey(Position_type, verbose_name='职务', default='', on_delete=models.CASCADE)
