@@ -52,11 +52,3 @@ class change_into(models.Model):
         return self.Meta.verbose_name
 
 
-class change_out(models.Model):
-    class Meta:
-        verbose_name = u"转出分析"
-        verbose_name_plural = verbose_name
-        db_table = 'change_out'
-
-    def __str__(self):
-        return self.Meta.verbose_name

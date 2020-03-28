@@ -5,52 +5,8 @@
 import xadmin
 from import_export import resources
 from apps.quotation.models import Company, Goods, Type, Unit, Position_type, Warranty_policy, Service, Terms_of_payment, \
-    Delivery_time, Delivery_way,Rate,Validity_period,Customer,Contact
-
-
-class GoodsResource(resources.ModelResource):
-    # def __init__(self):
-    #     super(GoodsResource, self).__init__()
-    #     field_list = get_model('apps.quotation', 'Goods')._meta.fields
-    #     # 应用名与模型名
-    #     self.verbose_name_dict = {}
-    #     # 获取所有字段的verbose_name并存放在verbose_name_dict字典里
-    #     for i in field_list:
-    #         self.verbose_name_dict[i.name] = i.verbose_name
-    #
-    # def get_export_fields(self):
-    #     fields = self.get_fields()
-    #     # 默认导入导出field的column_name为字段的名称
-    #     # 这里修改为字段的verbose_name
-    #     for field in fields:
-    #         field_name = self.get_field_name(field)
-    #         if field_name in self.verbose_name_dict.keys():
-    #             field.column_name = self.verbose_name_dict[field_name]
-    #             # 如果设置过verbose_name，则将column_name替换为verbose_name
-    #             # 否则维持原有的字段名
-    #     return fields
-
-    class Meta:
-        model = Goods
-        # skip_unchanged = True
-        # report_skipped = True
-        import_id_fields = ('id',)
-        # export_id_fields = ('id',)
-
-        fields = (
-            'id',
-            'name',
-            'type',
-            'unit',
-            'price',
-        )
-        # 白名单
-
-        exclude = (
-            'add_time',
-
-        )
-        # 黑名单
+    Delivery_time, Delivery_way, Rate, Validity_period, Customer, Contact,Brand,Supplier
+from xadmin.layout import Fieldset, Main, Side, Row
 
 
 class CompanyAdmin(object):
@@ -61,19 +17,55 @@ class CompanyAdmin(object):
     list_export = ['xls', 'xml', 'json']
 
 
+class GoodsResources(resources.ModelResource):
+    class Meta:
+        model = Goods
+
+
 class GoodsAdmin(object):
-    list_display = ['name', 'unit', 'type', 'nickname', 'price', 'meno', 'add_time']
-    search_fields = ['name', 'nickname']
-    list_filter = ['name', ]
-    list_editable = ['name', ]
-    import_export_args = {
-        'import_resource_class': GoodsResource,
-        # 'export_resource_class': GoodsResource,
-    }
-    # export_export_args = {
-    #     # 'import_resource_class': GoodsResource,
-    #     'export_resource_class': GoodsResource,
-    # }
+    import_export_args = {'import_resource_class': GoodsResources, 'export_resource_class': GoodsResources}
+
+    list_display = (
+        'brand', 'Gmodel', 'unit', 'type', 'price', 'min_price', 'meno', 'supplier', 'user', 'date',)
+    search_fields = ('Gmodel', 'meno')
+    list_display_links = ('brand', 'Gmodel', 'meno', 'unit', 'type', 'price', 'min_price',)
+    list_filter = ('brand', 'type')
+    list_per_page = 15
+    resource_class = GoodsResources
+    model_icon = 'fa fa-map'
+    # show_all_rel_details =['brand','unit','type']
+    list_editable = ['price','min_price','meno']
+
+
+    def get_form_layout(self):
+
+        self.form_layout = (
+            Main(
+                Fieldset('基础信息',
+                         'Gmodel',
+                         Row('price', 'min_price')
+                         # css_class='unsort no_title'
+                         ),
+                Fieldset('备注信息',
+                         "meno",
+                         ),
+            ),
+            # Side(
+            #     Fieldset(_('Status'),
+            #              'is_active', 'is_staff', 'is_superuser',
+            #              ),
+            # )
+            Side('选择项目',
+                 'brand', 'supplier', 'type', 'unit',
+
+                 ),
+        )
+
+        return super(GoodsAdmin, self).get_form_layout()
+
+    def save_models(self):
+        self.new_obj.user = self.request.user
+        super().save_models()
 
 
 class TypeAdmin(object):
@@ -145,22 +137,39 @@ class Validity_periodAdmin(object):
     list_filter = ['title', ]
     list_editable = ['title', ]
 
+
 class CustomerAdmin(object):
-    list_display = ['name','tel','contact' ,'add_time']
+    list_display = ['name', 'tel', 'contact', 'add_time']
     search_fields = ['name', ]
     list_filter = ['name', ]
     list_editable = ['name', ]
 
+
 class ContactAdmin(object):
-    list_display = ['name','company', 'position','phone','add_time']
-    search_fields = ['name','company', 'position','phone']
-    list_filter = ['name','company', 'position','phone' ]
-    list_editable = ['name','company' ]
+    list_display = ['name', 'company', 'position', 'phone', 'add_time']
+    search_fields = ['name', 'company', 'position', 'phone']
+    list_filter = ['name', 'company', 'position', 'phone']
+    list_editable = ['name', 'company']
 
 
+class SupplierAdmin(object):
+    list_display = ['id', 'name', 'advantage', 'meno', 'contact', ]
+    search_fields = ['name', 'contact', 'advantage']
+    list_filter = ['name', 'contact', 'advantage']
+    # list_editable =['name','desc']
+    model_icon = 'fa fa-users'
 
 
+class BrandAdmin(object):
+    list_display = ['id', 'name', ]
+    search_fields = ['name', ]
+    list_filter = ['name', ]
+    list_editable = ['name', ]
+    model_icon = 'fa fa-superpowers '
 
+
+xadmin.site.register(Brand, BrandAdmin)
+xadmin.site.register(Supplier, SupplierAdmin)
 xadmin.site.register(Company, CompanyAdmin)
 xadmin.site.register(Goods, GoodsAdmin)
 xadmin.site.register(Unit, UnitAdmin)

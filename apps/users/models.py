@@ -23,7 +23,7 @@ class UserProfile(AbstractUser):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.username
+        return self.nick_name
 
 
 class BaseModel(models.Model):#建立基础模型

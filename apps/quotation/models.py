@@ -18,23 +18,28 @@ class Company(BaseModel):
     def __str__(self):
         return self.title
 
-
-class Goods(BaseModel):  # 货品资料
-    name = models.CharField(max_length=64, unique=True, verbose_name='货品名称')
-    type = models.ForeignKey(to='Type', verbose_name='货品类别', default=0, on_delete=models.CASCADE)
-    unit = models.ForeignKey(to='Unit', verbose_name='单位', default=0, on_delete=models.CASCADE)
-    nickname = models.CharField(max_length=64, verbose_name='别名', blank=True, null=True)
-    price = models.FloatField(verbose_name='采购价', default=0)
-    date = models.DateField(verbose_name='更改日期', auto_now=True)
-    meno = models.TextField(verbose_name='备注', default='备注信息')
+class Supplier(models.Model):  # 供应商
+    name = models.CharField(max_length=64, verbose_name='供应商', unique=True)
+    advantage = models.CharField(max_length=64, verbose_name='优势品牌', blank=True,null=True)
+    contact = models.CharField(max_length=64, verbose_name='联系信息',blank=True,null=True )
+    meno = models.CharField(max_length=128, verbose_name='备注',blank=True,null=True )
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = '货品资料'
-        verbose_name_plural = verbose_name
+        verbose_name = '供应商'
+        verbose_name_plural = '供应商'
 
+class Brand(models.Model):
+    name = models.CharField(max_length=24, verbose_name='品牌')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '品牌'
+        verbose_name_plural = '品牌'
 
 class Type(BaseModel):  # 货品类别
     name = models.CharField(max_length=24, verbose_name='货品类别')
@@ -56,6 +61,27 @@ class Unit(BaseModel):  # 货品单位
     class Meta:
         verbose_name = '货品单位'
         verbose_name_plural = verbose_name
+
+
+class Goods(models.Model):  # 货品资料
+    brand = models.ForeignKey(to='Brand', verbose_name='品牌', on_delete=models.CASCADE)
+    Gmodel = models.CharField(max_length=64, unique=True, verbose_name='品名规格',default='')
+    unit = models.ForeignKey(Unit, verbose_name='单位', default=0,on_delete=models.CASCADE )
+    type = models.ForeignKey(Type, verbose_name='分类', default=0, on_delete=models.CASCADE )
+    price = models.FloatField(verbose_name='进价', default=0)
+    min_price = models.FloatField(verbose_name='最低售价', default=0)
+    meno = models.TextField(verbose_name='备注', default='备注信息',blank=True,null=True)
+    supplier = models.ForeignKey(to='Supplier', verbose_name='供应商', on_delete=models.CASCADE)
+    date = models.DateField(verbose_name='更改日期', auto_now=True)
+    user = models.ForeignKey(UserProfile, verbose_name='操作员',on_delete=models.CASCADE, editable=False, null=True)
+
+    class Meta:
+        verbose_name = '产品'
+        verbose_name_plural = '产品信息'
+
+    def __str__(self):
+        return self.Gmodel
+
 
 
 class Position_type(BaseModel):

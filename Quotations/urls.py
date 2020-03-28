@@ -18,7 +18,7 @@ from django.urls import path
 import xadmin
 from apps.quotation import views
 urlpatterns = [
-    path('admin/', xadmin.site.urls),
+    path('', xadmin.site.urls),
     path('index/', views.index),
 
 

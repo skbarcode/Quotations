@@ -20,42 +20,26 @@ class GlobalSittings(object):
     }
 
     # 配置模型图标，即二级菜单图标
-    def get_site_menu(self):
-        return (
-            {'title': '单据信息',
-             # 'perm': self.get_model_perm(models.UserProfile, 'view'),
-             'menus': (
-                 {
-                     'title': '保修政策',
-                     'url': '/admin/quotation/warranty_policy/',
-                 },
-                 {
-                     'title': '服务政策',
-                     'url': '/admin/quotation/service/',
-                 },
-                 {
-                     'title': '付款方式',
-                     'url': '/admin/quotation/terms_of_payment/',
-                 },
-                 {
-                     'title': '发货时间',
-                     'url': '/admin/quotation/delivery_time/',
-                 },
-                 {
-                     'title': '发货方式',
-                     'url': '/admin/quotation/delivery_way/',
-                 },
-                 {
-                     'title': '发票税率',
-                     'url': '/admin/quotation/rate/',
-                 },
-                 {
-                     'title': '有效期',
-                     'url': '/admin/quotation/validity_period/',
-                 },
-             )
-             },
-        )
+    def get_site_menu(self):  # 名称不能改
+        return [
+            {
+                'title': '销售管理',
+                'icon': 'fa fa-bar-chart-o',
+                'menus': (
+                    {
+                        'title': '报价单',  # 这里是你菜单的名称
+                        'url': '/quotation/',  # 这里填写你将要跳转url
+                        'icon': 'fa fa-cny'  # 这里是bootstrap的icon类名，要换icon只要登录bootstrap官网找到icon的对应类名换上即可
+                    },
+                    {
+                        'title': '销售合同',
+                        'url': 'http://www.taobao.com',
+                        'icon': 'fa fa-cny'
+                    }
+                )
+            }
+        ]
+
 
 
 class BaseSettings(object):

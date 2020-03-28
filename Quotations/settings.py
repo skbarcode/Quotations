@@ -37,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'xadmin.apps.XAdminConfig',
     'apps.users.apps.UsersConfig',
+    'apps.quotation.apps.QuotationConfig',
+    'apps.documents.apps.DocumentsConfig',
     'crispy_forms',
     'import_export',
 
-    'apps.quotation.apps.QuotationConfig',
-    'apps.documents.apps.DocumentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'Quotations.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
+        'NAME': 'sqlite3',
     }
 }
 
